@@ -1,20 +1,163 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happy Birthday Melasha</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Dirty 30 — Happy Birthday Melasha</title>
+
+  <!-- Cute, rounded font -->
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-    <div class="cake-container">
-        <img src="cake.png" alt="Birthday Cake" class="cake">
-        <div class="memory-backs">
-            <div class="flat-back"></div>
-            <div class="flat-back"></div>
+  <!-- Confetti Canvas -->
+  <canvas id="confetti-canvas" aria-hidden="true"></canvas>
+
+  <!-- Card wrapper -->
+  <div class="card-wrap">
+    <!-- Front (closed) -->
+    <main class="card-front" id="cardFront" role="button" aria-label="Open card">
+      <div class="front-inner">
+        <!-- Cute cake SVG -->
+        <figure class="cake-figure" aria-hidden="true">
+          <svg viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg" width="320" height="320" role="img" aria-label="Heart cake with candles">
+            <!-- bottom tier -->
+            <ellipse cx="110" cy="170" rx="85" ry="18" fill="#ffdfe6"/>
+            <rect x="40" y="120" width="140" height="60" rx="26" fill="#ffdfe6"/>
+            <path d="M40 135 q70 30 140 0" fill="none" stroke="#ffb3c2" stroke-width="6" stroke-linecap="round"/>
+
+            <!-- middle frills -->
+            <path d="M30 120 q40 -40 80 0 q40 -40 80 0" fill="#fff0f4" stroke="#ffb3c2" stroke-width="4" stroke-linecap="round"/>
+
+            <!-- heart top frosting -->
+            <path d="M110 56
+                     C 86 18, 36 28, 50 72
+                     C 56 94, 84 108, 110 128
+                     C 136 108, 164 94, 170 72
+                     C 184 28, 134 18, 110 56 Z"
+                  fill="#fffafc" stroke="#ff9db1" stroke-width="5"/>
+
+            <!-- heart border decorative dots -->
+            <g fill="#ff9db1">
+              <circle cx="78" cy="48" r="3"/>
+              <circle cx="94" cy="42" r="3"/>
+              <circle cx="126" cy="42" r="3"/>
+              <circle cx="142" cy="48" r="3"/>
+              <circle cx="110" cy="80" r="3"/>
+            </g>
+
+            <!-- cherries -->
+            <g fill="#e84d6d">
+              <circle cx="68" cy="62" r="6"/>
+              <circle cx="150" cy="62" r="6"/>
+            </g>
+            <g stroke="#6b8f3b" stroke-width="1.6" stroke-linecap="round">
+              <path d="M66 56 q6 -10 10 -8" fill="none"/>
+              <path d="M148 56 q-6 -10 -10 -8" fill="none"/>
+            </g>
+
+            <!-- candles (blue) -->
+            <g>
+              <rect x="82" y="30" width="8" height="22" rx="2" fill="#4a90e2"/>
+              <rect x="104" y="22" width="8" height="30" rx="2" fill="#4a90e2"/>
+              <rect x="126" y="30" width="8" height="22" rx="2" fill="#4a90e2"/>
+              <!-- flames -->
+              <ellipse cx="108" cy="18" rx="4.5" ry="6.5" fill="#ffd27a"/>
+              <ellipse cx="96" cy="38" rx="2.8" ry="4" fill="#ffd27a" transform="rotate(-18 96 38)"/>
+              <ellipse cx="130" cy="38" rx="2.8" ry="4" fill="#ffd27a" transform="rotate(18 130 38)"/>
+            </g>
+
+            <!-- "30" centered on heart -->
+            <text x="110" y="92" text-anchor="middle" font-family="Quicksand, system-ui, sans-serif"
+                  font-weight="800" font-size="34" fill="#f06292" style="letter-spacing:1px">
+              30
+            </text>
+          </svg>
+        </figure>
+
+        <p class="front-sub">Happy Birthday Melasha</p>
+      </div>
+
+      <button id="openButton" class="open-btn" aria-label="Open card">Open</button>
+    </main>
+
+    <!-- Inside (opened) -->
+    <section class="card-inside" id="cardInside" aria-hidden="true">
+      <button id="closeButton" class="close-btn" aria-label="Close card">✕</button>
+
+      <!-- Left: photos (unchanged) -->
+      <aside class="left-panel">
+        <h3 class="left-heading">TAP A PHOTO TO REVEAL A MEMORY</h3>
+        <div class="photo-grid" id="photoGrid">
+          <button class="photo-card" data-index="1" aria-label="Photo 1 — tap to flip">
+            <div class="photo-inner">
+              <div class="photo-face photo-front">
+                <img src="https://via.placeholder.com/600x600/2b2b2b/ffffff?text=Photo+1" alt="Photo 1">
+                <span class="tap-badge">TAP</span>
+              </div>
+              <div class="photo-face photo-back">
+                <p class="memory">That epic night when we danced till sunrise — never forgotten! 💙</p>
+              </div>
+            </div>
+          </button>
+
+          <button class="photo-card" data-index="2" aria-label="Photo 2 — tap to flip">
+            <div class="photo-inner">
+              <div class="photo-face photo-front">
+                <img src="https://via.placeholder.com/600x600/2b2b2b/ffffff?text=Photo+2" alt="Photo 2">
+                <span class="tap-badge">TAP</span>
+              </div>
+              <div class="photo-face photo-back">
+                <p class="memory">That concert we lost our voices at — best. night. ever. 🎶</p>
+              </div>
+            </div>
+          </button>
+
+          <button class="photo-card" data-index="3" aria-label="Photo 3 — tap to flip">
+            <div class="photo-inner">
+              <div class="photo-face photo-front">
+                <img src="https://via.placeholder.com/600x600/2b2b2b/ffffff?text=Photo+3" alt="Photo 3">
+                <span class="tap-badge">TAP</span>
+              </div>
+              <div class="photo-face photo-back">
+                <p class="memory">All the times you lifted us up — your laugh is contagious. ✨</p>
+              </div>
+            </div>
+          </button>
+
+          <button class="photo-card" data-index="4" aria-label="Photo 4 — tap to flip">
+            <div class="photo-inner">
+              <div class="photo-face photo-front">
+                <img src="https://via.placeholder.com/600x600/2b2b2b/ffffff?text=Photo+4" alt="Photo 4">
+                <span class="tap-badge">TAP</span>
+              </div>
+              <div class="photo-face photo-back">
+                <p class="memory">Here’s to more wild adventures — the best is ahead! 🎉</p>
+              </div>
+            </div>
+          </button>
         </div>
-        <button class="close-button">Close</button>
-    </div>
-    <script src="script.js"></script>
+      </aside>
+
+      <!-- Right: message (unchanged) -->
+      <article class="right-panel">
+        <div class="message-wrap">
+          <div class="title-row">
+            <div class="title-decor">&#10084;</div>
+            <h2 class="recipient">MELASHA</h2>
+          </div>
+
+          <div class="message-body">
+            <p>Thirty looks absolutely badass on you! This milestone is not just about the years you've lived, but the incredible person you've become along the way.</p>
+            <p>Your fire, your spirit, your strength — these are the things that make you truly legendary. Every memory we've shared has been epic, and I'm so stoked to celebrate this day with you.</p>
+            <p>Here's to the next chapter — may it be filled with chaos, adventures, and everything your wild heart desires.</p>
+            <p class="signature">With love,<br><span>Happy Birthday! 🎂</span></p>
+          </div>
+        </div>
+      </article>
+    </section>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>
