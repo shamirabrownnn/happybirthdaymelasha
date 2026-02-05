@@ -1,0 +1,369 @@
+/* styles.css */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    position: relative;
+}
+
+/* Confetti Canvas */
+#confetti-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9999;
+}
+
+/* Card Container */
+.card-container {
+    position: relative;
+    width: 90%;
+    max-width: 1200px;
+    height: 700px;
+    perspective: 2000px;
+}
+
+/* Front of Card */
+.card-front {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #000000 0%, #1a1a2e 100%);
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    transition: transform 0.8s ease, opacity 0.8s ease;
+    z-index: 10;
+    border: 2px solid #4a90e2;
+}
+
+.card-front.hidden {
+    transform: rotateY(-90deg);
+    opacity: 0;
+    pointer-events: none;
+}
+
+.front-content {
+    text-align: center;
+}
+
+.main-title {
+    font-size: 8rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, #4a90e2 0%, #c0c0c0 50%, #4a90e2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 1rem;
+    text-shadow: 0 0 30px rgba(74, 144, 226, 0.5);
+    animation: shimmer 3s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+    0%, 100% {
+        filter: brightness(1);
+    }
+    50% {
+        filter: brightness(1.3);
+    }
+}
+
+.subtitle {
+    font-size: 2.5rem;
+    color: #c0c0c0;
+    font-weight: 300;
+    letter-spacing: 0.05em;
+    text-shadow: 0 0 20px rgba(192, 192, 192, 0.3);
+}
+
+.open-button {
+    position: absolute;
+    bottom: 30px;
+    right: 30px;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%);
+    border: 3px solid #c0c0c0;
+    color: white;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 20px rgba(74, 144, 226, 0.4);
+    z-index: 20;
+}
+
+.open-button:hover {
+    transform: scale(1.1);
+    box-shadow: 0 8px 30px rgba(74, 144, 226, 0.6);
+}
+
+.open-button:active {
+    transform: scale(0.95);
+}
+
+/* Inside of Card */
+.card-inside {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: #000000;
+    border-radius: 20px;
+    display: flex;
+    opacity: 0;
+    transform: scale(0.9);
+    transition: opacity 0.8s ease 0.4s, transform 0.8s ease 0.4s;
+    pointer-events: none;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    border: 2px solid #4a90e2;
+    overflow: hidden;
+}
+
+.card-inside.visible {
+    opacity: 1;
+    transform: scale(1);
+    pointer-events: auto;
+}
+
+/* Left Side - Photo Grid */
+.left-side {
+    flex: 1;
+    padding: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+    border-right: 2px solid #4a90e2;
+}
+
+.photo-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 1.5rem;
+    width: 100%;
+    max-width: 500px;
+}
+
+.photo-card {
+    position: relative;
+    width: 100%;
+    padding-bottom: 100%;
+    cursor: pointer;
+    perspective: 1000px;
+}
+
+.photo-inner {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+}
+
+.photo-card.flipped .photo-inner {
+    transform: rotateY(180deg);
+}
+
+.photo-front,
+.photo-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(74, 144, 226, 0.3);
+}
+
+.photo-front {
+    background: #1a1a1a;
+}
+
+.photo-front img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(100%);
+    transition: filter 0.3s ease;
+}
+
+.photo-card:hover .photo-front img {
+    filter: grayscale(80%);
+}
+
+.photo-back {
+    background: linear-gradient(135deg, #4a90e2 0%, #2d5a8f 100%);
+    transform: rotateY(180deg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+}
+
+.memory-text {
+    color: white;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    text-align: center;
+    font-weight: 400;
+}
+
+/* Right Side - Birthday Message */
+.right-side {
+    flex: 1;
+    padding: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
+}
+
+.message-content {
+    max-width: 500px;
+}
+
+.message-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #4a90e2 0%, #c0c0c0 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 2rem;
+    line-height: 1.2;
+}
+
+.message-text {
+    color: #c0c0c0;
+    font-size: 1.1rem;
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+}
+
+.highlight {
+    color: #4a90e2;
+    font-weight: 600;
+}
+
+.message-signature {
+    color: #c0c0c0;
+    font-size: 1.2rem;
+    line-height: 1.8;
+    margin-top: 2rem;
+    font-style: italic;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .card-inside {
+        flex-direction: column;
+    }
+
+    .left-side,
+    .right-side {
+        border: none;
+        padding: 2rem;
+    }
+
+    .left-side {
+        border-bottom: 2px solid #4a90e2;
+    }
+
+    .photo-grid {
+        max-width: 400px;
+        gap: 1rem;
+    }
+
+    .main-title {
+        font-size: 5rem;
+    }
+
+    .subtitle {
+        font-size: 1.8rem;
+    }
+
+    .message-title {
+        font-size: 2rem;
+    }
+
+    .message-text {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .card-container {
+        height: auto;
+        min-height: 600px;
+    }
+
+    .main-title {
+        font-size: 4rem;
+    }
+
+    .subtitle {
+        font-size: 1.5rem;
+    }
+
+    .photo-grid {
+        max-width: 300px;
+        gap: 0.8rem;
+    }
+
+    .memory-text {
+        font-size: 0.8rem;
+    }
+
+    .message-title {
+        font-size: 1.8rem;
+    }
+
+    .message-text {
+        font-size: 0.95rem;
+    }
+
+    .open-button {
+        width: 60px;
+        height: 60px;
+        font-size: 0.85rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .main-title {
+        font-size: 3rem;
+    }
+
+    .subtitle {
+        font-size: 1.2rem;
+    }
+
+    .left-side,
+    .right-side {
+        padding: 1.5rem;
+    }
+
+    .photo-grid {
+        max-width: 250px;
+        gap: 0.6rem;
+    }
+}
